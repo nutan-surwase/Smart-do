@@ -1,0 +1,218 @@
+<html>
+<head>
+<title> remider </title>
+
+<style>
+body{
+padding:0px;
+margin:0px;
+background:linear-gradient(135deg,#2a1f4f,#1f2a44);
+color:white;
+
+}
+
+
+ul{
+
+list-style-type:none;
+position:sticky;
+top:0px;
+background-color:#8B5A2B;
+}
+
+ul li{
+display:inline-block;
+padding:30px;
+}
+
+
+a{
+color:white;
+
+}
+
+
+
+#contener{
+
+display:flex;
+align-items:center;
+justify-content:center;
+margin-top:7cm;
+
+
+}
+
+input{
+
+height:1cm;
+width:10cm;
+border:1px solid #8B5A2B;
+}
+
+#text{
+text-align:center;
+
+}
+button{
+height:1cm;
+width:3cm;
+margin-left:3.5cm;
+background-color:#8B5A2B;
+color:white;
+
+
+}
+
+
+
+
+
+
+
+</style>
+
+
+</head>
+<body>
+
+
+
+<ul>
+
+<a href="file:///C:/Users/nutan/OneDrive/Desktop/smart%20do.html">
+<li> Home </li>
+</a>
+
+
+<a href="file:///C:/Users/nutan/OneDrive/Desktop/taskm.html?" target="blank">
+<li class="t"> Task Management </li>
+</a>
+
+<a href="file:///C:/Users/nutan/OneDrive/Desktop/remimder.html"  target="blank" >
+<li class="r"> Reminder Notifications</li>
+</a>
+
+<a href="file:///C:/Users/nutan/OneDrive/Desktop/daliy.html" target="blank"  >
+<li  class="d"> Daliy planner </li>
+</a>
+
+
+ 
+
+</ul>
+
+
+  <div id="contener">
+
+<div id="inputs">
+<div id="text">
+<h1>Reminder Notifications</h1>
+<p>Set reminders so you never forget important tasks.</p>
+</div>
+<br>
+<input type="text" id="task" required  placeholder="enter the reminder">
+<br>
+<br>
+<input type="date" id="date" required>
+<br><br>
+<input type="time" id="time" required >
+<br>
+<br>
+<button type="button" onclick="remind()"
+> Set Reminder </button>
+<ul id="riminders"></ul>
+
+
+</div>
+
+
+</div>
+
+<script>
+
+window.onload = function(){
+
+let list = document.getElementById("riminders");
+
+for(let i=0;i<localStorage.length;i++)
+{
+
+let value = localStorage.getItem(localStorage.key(i));
+
+let li = document.createElement("li");
+
+
+li.innerHTML = value + " <button onclick='deleteReminder(this)'>Delete</button>";
+
+
+list.appendChild(li);
+
+}
+
+}
+
+ 
+function remind()
+{
+
+let task=document.getElementById("task").value;
+
+let date=document.getElementById("date").value;
+
+let time=document.getElementById("time").value;
+
+
+let reminderTime = new Date(date + " " + time).getTime();
+
+let list = document.getElementById("riminders");
+
+let li = document.createElement("li");
+
+
+li.innerHTML = task +"-" + date +" "+ time + " <button onclick='deleteReminder(this)'>Delete</button>";
+
+
+
+list.appendChild(li);
+localStorage.setItem(task, task + " - " + date + " " + time);
+
+alert("Reminder Added!");
+
+checkReminder(reminderTime,task);
+
+
+}
+
+
+function checkReminder(reminderTime,task)
+{
+
+let timer = setInterval(function(){
+
+let now = new Date().getTime();
+
+if(now>=reminderTime)
+{
+alert("reminder: " + task);
+
+clearInterval(timer);
+}
+
+},1000);
+
+}
+
+function deleteReminder(btn)
+{
+let li = btn.parentElement;
+li.remove();
+localStorage.clear();
+}
+
+
+
+</script>
+
+</body>
+</html>

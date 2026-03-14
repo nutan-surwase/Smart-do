@@ -1,0 +1,486 @@
+<html>
+<head>
+<title> task manmgent</title>
+
+
+<style>
+
+
+:root{
+  --primaryColor: #0f172a;
+  --secondaryBackgroundColor: white;
+  --teal: #8B5A2B;
+  --textColor: #1e293b;
+}
+
+
+body{
+padding:0px;
+margin:0px;
+background:linear-gradient(135deg,#2a1f4f,#1f2a44);
+color:white;
+
+}
+
+
+
+
+
+ul{
+
+list-style-type:none;
+position:sticky;
+top:0px;
+background-color:#8B5A2B;
+}
+
+ul li{
+display:inline-block;
+padding:30px;
+}
+
+
+a{
+color:white;
+
+}
+
+
+.container{
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+margin:120px auto 0 auto;
+max-width:500px;
+
+}
+
+
+.stats-container{
+padding:30px;
+border-radius:20px;
+border:2px solid #8B5A2B;
+display:flex;
+justify-content:space-between;
+gap:20px;
+width:100%;
+}
+
+.details{   
+
+
+width:100%;
+
+}
+
+#prograsbar{
+
+width:100%;
+height:10px;
+background-color:var(--secondaryBackgroundColor);
+border-radius:5px;
+margin-top:20px;
+
+
+
+}
+
+#progrss{
+
+width:0%;
+height:10px;
+background-color:var(--teal);
+border-radius:10px;
+transition: all 0.3s ease ;
+}
+
+
+
+
+#number{
+width:100px;
+height:100px;
+background-color:#8B5A2B;
+color:white;
+display:flex;
+align-items:center;
+justify-content:center;
+border-radius:50%;
+font-size:30px;
+fount-weight:bold;
+
+}
+
+
+
+form{
+
+margin-top:60px;
+width:100%;
+display: flex;
+gap:10px;
+}
+
+input{
+flex: 1;
+padding:16px;
+border:1px solid #8B5A2B;
+border-radius:10px;
+outline:none;
+}
+
+button{
+
+width:50px;
+height:50px;
+background-color:#8B5A2B;
+color:white;
+display:flex;
+align-items:center;
+justify-content:center;
+border-radius:50%;
+font-size:20px;
+fount-weight:bold;
+
+
+}
+
+
+
+
+
+
+
+.task-list li{
+display: flex;
+align-items: center;
+justify-content: space-between;
+margin: 10px 0;
+padding: 10px;
+gap:100px;
+border-radius: 5px;
+}
+
+.task-list li span{
+flex: 1;
+margin-left: 10px;
+}
+
+.task-list li button{
+margin-left: 10px;
+padding: 5px 10px;
+cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</style>
+
+
+
+
+
+
+
+
+<head>
+<body>
+
+<ul>
+
+<a href="file:///C:/Users/nutan/OneDrive/Desktop/smart%20do.html">
+<li> Home </li>
+</a>
+
+
+<a href="file:///C:/Users/nutan/OneDrive/Desktop/taskm.html?" target="blank">
+<li class="t"> Task Management </li>
+</a>
+
+<a href="file:///C:/Users/nutan/OneDrive/Desktop/remimder.html"  target="blank" >
+<li class="r"> Reminder Notifications</li>
+</a>
+
+<a href="file:///C:/Users/nutan/OneDrive/Desktop/daliy.html" target="blank"  >
+<li  class="d"> Daliy planner </li>
+</a>
+
+
+ 
+
+</ul>
+
+
+
+
+
+<div class="container">
+
+<div   class="stats-container">
+
+<div class="details">
+
+<h1> Done </h1>
+
+<p> Keep it up </p>
+
+<div  id="prograsbar">
+
+<div   id="progrss">
+
+</div>
+
+</div>
+
+</div>
+
+<div class="stats-number">
+
+<p id="number"> 2/3 </p>
+
+</div>
+
+
+</div>
+
+<form action="">
+<input type="text" placeholder="Enter Your task ">
+<button type="submit">Add </button>
+</form>
+
+<ul class="task-list"></ul>
+
+</div>
+
+
+
+
+<script>
+
+
+
+
+const form = document.querySelector("form");
+const input = document.querySelector("input");
+const taskList = document.querySelector(".task-list");
+
+const progress = document.getElementById("progrss");
+const number = document.getElementById("number");
+
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+
+
+form.addEventListener("submit", function(e){
+
+e.preventDefault();
+
+let taskText = input.value;
+
+if(taskText === "") return;
+
+let task = {
+text: taskText,
+completed: false
+};
+
+
+tasks.push(task);
+localStorage.setItem("tasks", JSON.stringify(tasks));
+
+
+
+input.value = "";
+
+renderTasks();
+
+});
+
+function renderTasks(){
+
+taskList.innerHTML = "";
+
+tasks.forEach((task,index)=>{
+
+let li = document.createElement("li");
+
+let checkbox = document.createElement("input");
+checkbox.type = "checkbox";
+
+checkbox.checked = task.completed;
+
+checkbox.addEventListener("change", function(){
+task.completed = checkbox.checked;
+localStorage.setItem("tasks", JSON.stringify(tasks));
+updateProgress();
+});
+
+
+
+let span = document.createElement("span");
+span.innerText = task.text;
+
+let delBtn = document.createElement("button");
+delBtn.innerText = "Delete";
+
+
+
+delBtn.addEventListener("click", function(){
+tasks.splice(index,1);
+localStorage.setItem("tasks", JSON.stringify(tasks));
+renderTasks();
+});
+
+
+
+
+
+
+li.appendChild(checkbox);
+li.appendChild(span);
+li.appendChild(delBtn);
+
+taskList.appendChild(li);
+
+});
+
+updateProgress();
+
+}
+
+function updateProgress(){
+
+let completed = tasks.filter(task=>task.completed).length;
+
+let total = tasks.length;
+
+number.innerText = completed + "/" + total;
+
+let percent = 0;
+
+if(total > 0){
+percent = (completed / total) * 100;
+}
+
+progress.style.width = percent + "%";
+
+}
+
+
+renderTasks();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
