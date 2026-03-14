@@ -15,5 +15,9 @@ HTML
 CSS
 JavaScript
 
+Live Website:
+https://nutan-surwase.github.io/Smart-do/
+
+
 Developer:
 Nutan Surawase (frist year)
